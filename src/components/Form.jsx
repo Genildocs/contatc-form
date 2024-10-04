@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 export default function Form() {
   const [valid, setValid] = useState(false);
-  console.log(valid);
+
   const {
     register,
     handleSubmit,
@@ -28,10 +28,10 @@ export default function Form() {
       className="bg-white self-end md:w-[35vw]  p-5 md:p-8  rounded-lg"
       onSubmit={handleSubmit(onSubmit)}>
       <h1 className=" text-2xl font-bold">Contact Us</h1>
-      <div className="flex flex-col ">
+      <div className="d-flex ">
         {/* First and Last Name */}
         <div className="md:flex items-center justify-between gap-5">
-          <div className="flex flex-col flex-1  mt-5">
+          <div className="d-flex flex-1  mt-5">
             <label className="mb-1">First Name*</label>
             <input
               {...register('firstName', { required: true })}
@@ -40,15 +40,14 @@ export default function Form() {
                   errors.firstName
                     ? 'border-red-600'
                     : 'border-stone-800 hover:border-green-300'
-                }` +
-                ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer '
+                }` + ' input-borders '
               }
             />
             {errors.firstName && (
               <span className="text-red-600 mt-2">This field is required</span>
             )}
           </div>
-          <div className="flex flex-col flex-1 mt-2 md:mt-5">
+          <div className="d-flex flex-1 mt-2 md:mt-5">
             <label className="mb-1">Last Name*</label>
             <input
               {...register('lastName', { required: true })}
@@ -57,8 +56,7 @@ export default function Form() {
                   errors.lastName
                     ? 'border-red-600'
                     : 'border-stone-800 hover:border-green-300'
-                }` +
-                ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer'
+                }` + ' input-borders'
               }
             />
             {errors.lastName && (
@@ -67,7 +65,7 @@ export default function Form() {
           </div>
         </div>
         {/* Email Address */}
-        <div className="flex flex-col mt-2">
+        <div className="d-flex mt-2">
           <label className="mb-1">Email Address*</label>
           <input
             {...register('email', {
@@ -79,8 +77,7 @@ export default function Form() {
                 errors.email
                   ? 'border-red-600 '
                   : 'border-stone-800 hover:border-green-300'
-              }` +
-              ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer'
+              }` + ' input-borders'
             }
           />
           {errors.email && (
@@ -93,7 +90,7 @@ export default function Form() {
         <div className="mt-2">
           <span>Query Type*</span>
           <div className="md:flex items-center justify-between gap-5">
-            <div className="flex md:flex-1 items-center gap-2 border-2 border-stone-800  border-solid rounded-lg p-2 mt-2 mb-2 hover:border-green-300 cursor-pointer">
+            <div className="flex md:flex-1 items-center gap-2 input-borders mt-2 mb-2 hover:border-green-300 ">
               <input
                 name="queryType"
                 type="radio"
@@ -102,7 +99,7 @@ export default function Form() {
               />
               <label>General Enquiry</label>
             </div>
-            <div className="flex md:flex-1 items-center gap-2 border-2  border-stone-800 border-solid rounded-lg p-2 hover:border-green-300 cursor-pointer">
+            <div className="flex md:flex-1 items-center gap-2 input-borders hover:border-green-300 ">
               <input
                 name="queryType"
                 type="radio"
@@ -113,18 +110,18 @@ export default function Form() {
             </div>
           </div>
           {errors.queryType && (
-            <div className="text-red-600 mt-2">
+            <div className="text-red-600 mt-1">
               <p>Please select a query type</p>
             </div>
           )}
         </div>
         {/* Message */}
-        <div className="mt-2 flex flex-col">
+        <div className="mt-2 d-flex">
           <label className="mb-1">Message*</label>
           <textarea
             {...register('message', { required: true })}
             className={clsx(
-              'outline-none border-2  border-solid rounded-lg p-2 cursor-pointer',
+              'input-borders',
               errors.message
                 ? 'border-red-600'
                 : 'border-stone-800 hover:border-green-300 '
