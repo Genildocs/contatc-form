@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 export default function Form() {
-  const [data, setData] = useState(null);
-
+  const [valid, setValid] = useState(false);
+  console.log(valid);
   const {
     register,
     handleSubmit,
@@ -18,8 +18,11 @@ export default function Form() {
     },
   });
 
-  const onSubmit = (data) => setData(data);
-  console.log(watch('consent'));
+  const onSubmit = (data) => {
+    alert(JSON.stringify(data));
+    setValid(true);
+  };
+
   return (
     <form
       className="bg-white self-end md:w-[35vw]  p-5 md:p-8  rounded-lg"
@@ -33,8 +36,12 @@ export default function Form() {
             <input
               {...register('firstName', { required: true })}
               className={
-                `${errors.firstName ? 'border-red-600' : 'border-stone-800'}` +
-                ' outline-none border-2  border-solid rounded-lg p-2 '
+                `${
+                  errors.firstName
+                    ? 'border-red-600'
+                    : 'border-stone-800 hover:border-green-300'
+                }` +
+                ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer '
               }
             />
             {errors.firstName && (
@@ -46,8 +53,12 @@ export default function Form() {
             <input
               {...register('lastName', { required: true })}
               className={
-                `${errors.lastName ? 'border-red-600' : 'border-stone-800'}` +
-                ' outline-none border-2  border-solid rounded-lg p-2'
+                `${
+                  errors.lastName
+                    ? 'border-red-600'
+                    : 'border-stone-800 hover:border-green-300'
+                }` +
+                ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer'
               }
             />
             {errors.lastName && (
@@ -64,8 +75,12 @@ export default function Form() {
               pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
             })}
             className={
-              `${errors.email ? 'border-red-600' : 'border-stone-800'}` +
-              ' outline-none border-2  border-solid rounded-lg p-2'
+              `${
+                errors.email
+                  ? 'border-red-600 '
+                  : 'border-stone-800 hover:border-green-300'
+              }` +
+              ' outline-none border-2  border-solid rounded-lg p-2 cursor-pointer'
             }
           />
           {errors.email && (
@@ -78,18 +93,20 @@ export default function Form() {
         <div className="mt-2">
           <span>Query Type*</span>
           <div className="md:flex items-center justify-between gap-5">
-            <div className="flex md:flex-1 items-center gap-2 border-2  border-solid rounded-lg p-2 mt-2 mb-2">
+            <div className="flex md:flex-1 items-center gap-2 border-2 border-stone-800  border-solid rounded-lg p-2 mt-2 mb-2 hover:border-green-300 cursor-pointer">
               <input
                 name="queryType"
                 type="radio"
+                className="cursor-pointer"
                 {...register('queryType', { required: true })}
               />
               <label>General Enquiry</label>
             </div>
-            <div className="flex md:flex-1 items-center gap-2 border-2  border-solid rounded-lg p-2">
+            <div className="flex md:flex-1 items-center gap-2 border-2  border-stone-800 border-solid rounded-lg p-2 hover:border-green-300 cursor-pointer">
               <input
                 name="queryType"
                 type="radio"
+                className="cursor-pointer"
                 {...register('queryType', { required: true })}
               />
               <label>Support Request</label>
@@ -107,8 +124,10 @@ export default function Form() {
           <textarea
             {...register('message', { required: true })}
             className={clsx(
-              'outline-none border-2  border-solid rounded-lg p-2 ',
-              errors.message ? 'border-red-600' : 'border-stone-800'
+              'outline-none border-2  border-solid rounded-lg p-2 cursor-pointer',
+              errors.message
+                ? 'border-red-600'
+                : 'border-stone-800 hover:border-green-300 '
             )}
           />
           {errors.message && (
@@ -120,6 +139,7 @@ export default function Form() {
           <div className="flex items-center gap-3 mt-3 ">
             <input
               type="checkbox"
+              className="cursor-pointer"
               {...register('consent', { required: true })}
             />
             <label>I consent to being contacted by the team*</label>
@@ -132,7 +152,7 @@ export default function Form() {
         </div>
         <button
           type="submit"
-          className=" cursor-pointer bg-green-600 text-white font-semibold rounded-md p-3 mt-5">
+          className=" cursor-pointer bg-green-300 text-white font-semibold rounded-md p-3 mt-5 hover:bg-green-900">
           Submit
         </button>
       </div>

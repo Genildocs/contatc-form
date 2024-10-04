@@ -13,3 +13,7 @@
     @apply md:flex items-center justify-center h-screen;
   }
 }
+
+input:checked {
+  accent-color: hsl(169, 82%, 27%);
+}
