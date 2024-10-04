@@ -6,8 +6,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  min-height: 100vh;
-  background-color: hsl(148, 38%, 91%);
-  font-family: 'Karla', sans-serif;
+@layer base {
+  body {
+    background-color: hsl(148, 38%, 91%);
+    font-family: 'Karla', sans-serif;
+    @apply md:flex items-center justify-center h-screen;
+  }
 }
