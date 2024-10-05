@@ -1,3 +1,4 @@
-export default function Completed() {
-  return <div>Completed</div>;
+export default function Completed({ valid }) {
+  console.log(valid);
+  return <div>{valid && <div>STATUS COMPLETED</div>}</div>;
 }

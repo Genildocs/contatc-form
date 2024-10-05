@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
+import Completed from './Completed';
 export default function Form() {
   const [valid, setValid] = useState(false);
 
@@ -25,8 +26,9 @@ export default function Form() {
 
   return (
     <form
-      className="bg-white self-end md:w-[35vw]  p-5 md:p-8  rounded-lg"
+      className="bg-white self-end md:w-[50vw] xl:w-[35vw]  p-5 md:p-8  rounded-lg"
       onSubmit={handleSubmit(onSubmit)}>
+      <Completed valid={valid} />
       <h1 className=" text-2xl font-bold">Contact Us</h1>
       <div className="d-flex ">
         {/* First and Last Name */}
@@ -47,7 +49,7 @@ export default function Form() {
               <span className="text-red-600 mt-2">This field is required</span>
             )}
           </div>
-          <div className="d-flex flex-1 mt-2 md:mt-5">
+          <div className="d-flex flex-1 mt-2 md:mt-5  ">
             <label className="mb-1">Last Name*</label>
             <input
               {...register('lastName', { required: true })}
