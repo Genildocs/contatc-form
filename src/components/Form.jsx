@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Completed from './Completed';
 export default function Form() {
   const [valid, setValid] = useState(false);
-
+  const notify = () => toast('Formulario enviado com sucesso!');
   const {
     register,
     handleSubmit,
@@ -20,15 +22,15 @@ export default function Form() {
   });
 
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
     setValid(true);
+    notify();
   };
 
   return (
     <form
       className="bg-white self-end md:w-[50vw] xl:w-[35vw]  p-5 md:p-8  rounded-lg"
       onSubmit={handleSubmit(onSubmit)}>
-      <Completed valid={valid} />
+      <ToastContainer />
       <h1 className=" text-2xl font-bold">Contact Us</h1>
       <div className="d-flex ">
         {/* First and Last Name */}
@@ -46,7 +48,9 @@ export default function Form() {
               }
             />
             {errors.firstName && (
-              <span className="text-red-600 mt-2">This field is required</span>
+              <span className="text-red-600 h-2 mt-2">
+                This field is required
+              </span>
             )}
           </div>
           <div className="d-flex flex-1 mt-2 md:mt-5  ">
@@ -62,7 +66,9 @@ export default function Form() {
               }
             />
             {errors.lastName && (
-              <span className="text-red-600 mt-2">This field is required</span>
+              <span className="text-red-600 h-2 mt-2">
+                This field is required
+              </span>
             )}
           </div>
         </div>
@@ -83,9 +89,9 @@ export default function Form() {
             }
           />
           {errors.email && (
-            <span className="text-red-600 mt-2">
+            <div className="text-red-600 h-2 mt-2">
               Please enter a valid email address
-            </span>
+            </div>
           )}
         </div>
         {/* Query Type */}
@@ -112,7 +118,7 @@ export default function Form() {
             </div>
           </div>
           {errors.queryType && (
-            <div className="text-red-600 mt-1">
+            <div className="text-red-600 h-2 mt-1">
               <p>Please select a query type</p>
             </div>
           )}
@@ -130,7 +136,9 @@ export default function Form() {
             )}
           />
           {errors.message && (
-            <span className="text-red-600 mt-2">This field is required</span>
+            <span className="text-red-600 h-2 mt-2">
+              This field is required
+            </span>
           )}
         </div>
         {/* Terms and conditions */}
@@ -144,7 +152,7 @@ export default function Form() {
             <label>I consent to being contacted by the team*</label>
           </div>
           {errors.consent && (
-            <span className="text-red-600 mt-2">
+            <span className="text-red-600 h-2 ">
               To submit this form, please consent to being contacted
             </span>
           )}
