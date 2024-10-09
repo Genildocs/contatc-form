@@ -1,101 +1,105 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import clsx from 'clsx';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
+import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Completed from './Completed';
+
+const schema = Joi.object({
+  firstName: Joi.string()
+    .pattern(new RegExp(/^[a-zA-Z]+$/))
+    .required(),
+  lastName: Joi.string()
+    .pattern(new RegExp(/^[a-zA-Z]+$/))
+    .required(),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: false })
+    .pattern(new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+    .required(),
+  queryType: Joi.string().required(),
+  message: Joi.string().required(),
+  consent: Joi.boolean().valid(true).required(),
+});
+
 export default function Form() {
-  const [valid, setValid] = useState(false);
-  const notify = () => toast('Formulario enviado com sucesso!');
+  const notify = () => {
+    toast('Formulario enviado com sucesso!');
+  };
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      message: '',
-    },
+    resolver: joiResolver(schema),
   });
-
-  const onSubmit = (data) => {
-    setValid(true);
+  console.log(errors);
+  function onSubmit(data) {
+    console.log(data);
     notify();
-  };
+  }
 
   return (
-    <form
-      className="bg-white self-end md:w-[50vw] xl:w-[35vw]  p-5 md:p-8  rounded-lg"
-      onSubmit={handleSubmit(onSubmit)}>
+    <>
       <ToastContainer />
-      <h1 className=" text-2xl font-bold">Contact Us</h1>
-      <div className="d-flex ">
-        {/* First and Last Name */}
-        <div className="md:flex items-center justify-between gap-5">
-          <div className="d-flex flex-1  mt-5">
-            <label className="mb-1">First Name*</label>
+      <form
+        className="bg-white p-5 md:w-[50vw] xl:w-[35vw] md:p-8 md:my-12 rounded-lg"
+        onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="text-2xl font-bold mb-5">Contact Us</h1>
+        <div className="md:flex justify-between">
+          {/* First and Last Name */}
+          <div>
+            <label>First Name*</label>
             <input
-              {...register('firstName', { required: true })}
-              className={
-                `${
-                  errors.firstName
-                    ? 'border-red-600'
-                    : 'border-stone-800 hover:border-green-300'
-                }` + ' input-borders '
-              }
+              {...register('firstName')}
+              className={`${
+                errors.firstName
+                  ? 'border-red-600'
+                  : 'border-stone-800 hover:border-green-300'
+              }  block w-full input-borders mt-2  `}
             />
-            {errors.firstName && (
-              <span className="text-red-600 h-2 mt-2">
-                This field is required
-              </span>
-            )}
+            <div className="h-5 mt-2 mb-2">
+              {errors.firstName && (
+                <p className="text-red-600">This field is required</p>
+              )}
+            </div>
           </div>
-          <div className="d-flex flex-1 mt-2 md:mt-5  ">
-            <label className="mb-1">Last Name*</label>
+          <div>
+            <label>Last Name*</label>
             <input
-              {...register('lastName', { required: true })}
-              className={
-                `${
-                  errors.lastName
-                    ? 'border-red-600'
-                    : 'border-stone-800 hover:border-green-300'
-                }` + ' input-borders'
-              }
+              {...register('lastName')}
+              className={`${
+                errors.lastName
+                  ? 'border-red-600'
+                  : 'border-stone-800 hover:border-green-300'
+              }  block w-full input-borders mt-2  `}
             />
-            {errors.lastName && (
-              <span className="text-red-600 h-2 mt-2">
-                This field is required
-              </span>
-            )}
+            <div className="h-2 mt-2 mb-5">
+              {errors.lastName && (
+                <p className="text-red-600">This field is required</p>
+              )}
+            </div>
           </div>
         </div>
         {/* Email Address */}
-        <div className="d-flex mt-2">
-          <label className="mb-1">Email Address*</label>
+        <div>
+          <label>Email*</label>
           <input
-            {...register('email', {
-              required: true,
-              pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-            })}
-            className={
-              `${
-                errors.email
-                  ? 'border-red-600 '
-                  : 'border-stone-800 hover:border-green-300'
-              }` + ' input-borders'
-            }
+            {...register('email')}
+            className={`${
+              errors.email
+                ? 'border-red-600'
+                : 'border-stone-800 hover:border-green-300'
+            }  block w-full input-borders mt-2  `}
           />
-          {errors.email && (
-            <div className="text-red-600 h-2 mt-2">
-              Please enter a valid email address
-            </div>
-          )}
+          <div className="h-2 mt-2 mb-2">
+            {errors.email && (
+              <p className="text-red-600">Please enter a valid email address</p>
+            )}
+          </div>
         </div>
         {/* Query Type */}
-        <div className="mt-2">
+        <div className="mt-5">
           <span>Query Type*</span>
           <div className="md:flex items-center justify-between gap-5">
             <div className="flex md:flex-1 items-center gap-2 input-borders mt-2 mb-2 hover:border-green-300 ">
@@ -112,34 +116,32 @@ export default function Form() {
                 name="queryType"
                 type="radio"
                 className="cursor-pointer"
-                {...register('queryType', { required: true })}
+                {...register('queryType')}
               />
               <label>Support Request</label>
             </div>
           </div>
-          {errors.queryType && (
-            <div className="text-red-600 h-2 mt-1">
-              <p>Please select a query type</p>
-            </div>
-          )}
+          <div className="text-red-600 h-2 my-2">
+            {errors.queryType && <p>Please select a query type</p>}
+          </div>
         </div>
         {/* Message */}
-        <div className="mt-2 d-flex">
+        <div className="mt-5 d-flex">
           <label className="mb-1">Message*</label>
           <textarea
-            {...register('message', { required: true })}
-            className={clsx(
-              'input-borders',
+            {...register('message')}
+            className={`
+            ${
               errors.message
                 ? 'border-red-600'
                 : 'border-stone-800 hover:border-green-300 '
-            )}
+            } input-borders`}
           />
-          {errors.message && (
-            <span className="text-red-600 h-2 mt-2">
-              This field is required
-            </span>
-          )}
+          <div className="text-red-600 h-2 my-2">
+            {errors.message && (
+              <span className="text-red-600 ">This field is required</span>
+            )}
+          </div>
         </div>
         {/* Terms and conditions */}
         <div className="md:my-5">
@@ -147,22 +149,26 @@ export default function Form() {
             <input
               type="checkbox"
               className="cursor-pointer"
-              {...register('consent', { required: true })}
+              {...register('consent')}
             />
             <label>I consent to being contacted by the team*</label>
           </div>
-          {errors.consent && (
-            <span className="text-red-600 h-2 ">
-              To submit this form, please consent to being contacted
-            </span>
-          )}
+          <div className="text-red-600 h-2 my-2">
+            {errors.consent && (
+              <span className="text-red-600  ">
+                To submit this form, please consent to being contacted
+              </span>
+            )}
+          </div>
         </div>
-        <button
-          type="submit"
-          className=" cursor-pointer bg-green-300 text-white font-semibold rounded-md p-3 mt-5 hover:bg-green-900">
-          Submit
-        </button>
-      </div>
-    </form>
+        <div>
+          <input
+            type="submit"
+            value="Submit"
+            className=" cursor-pointer bg-green-300 text-white font-semibold rounded-md p-3 mt-16 md:mt-5 hover:bg-green-900 w-full"
+          />
+        </div>
+      </form>
+    </>
   );
 }

@@ -10,7 +10,7 @@
   body {
     background-color: hsl(148, 38%, 91%);
     font-family: 'Karla', sans-serif;
-    @apply md:flex items-center justify-center h-screen;
+    @apply md:flex items-center  justify-center min-h-screen;
   }
 }
 
