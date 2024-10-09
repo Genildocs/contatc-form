@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { Flip, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const schema = Joi.object({
@@ -29,19 +29,34 @@ export default function Form() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: joiResolver(schema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      queryType: '',
+      message: '',
+      consent: false,
+    },
   });
-  console.log(errors);
+
   function onSubmit(data) {
     console.log(data);
     notify();
+    reset();
   }
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        autoClose={2000}
+        position="top-center"
+        transition={Flip}
+        hideProgressBar={true}
+      />
       <form
         className="bg-white p-5 md:w-[50vw] xl:w-[35vw] md:p-8 md:my-12 rounded-lg"
         onSubmit={handleSubmit(onSubmit)}>
